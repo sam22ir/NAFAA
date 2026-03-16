@@ -16,7 +16,7 @@ export default function Footer() {
               علامة تجارية حزائرية متخصصة في ألبسة الشارع والرياضة، نسعى لتقديم الجودة والأناقة لجيل اليوم.
             </p>
             <div className="flex items-center gap-4">
-              <Link href="#" className="hover:text-accent-blue transition-colors outline-none"><Instagram size={20} /></Link>
+              <Link href="https://www.instagram.com/nafaabrand?igsh=MW55MTRrN2hyMjRndA==" target="_blank" className="hover:text-accent-blue transition-colors outline-none"><Instagram size={20} /></Link>
               <Link href="#" className="hover:text-accent-blue transition-colors outline-none"><Facebook size={20} /></Link>
               <Link href="#" className="hover:text-accent-blue transition-colors outline-none"><Twitter size={20} /></Link>
             </div>
@@ -50,11 +50,11 @@ export default function Footer() {
             <ul className="flex flex-col gap-4 font-tajawal text-sm text-light-blue/70 list-none m-0 p-0">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-accent-blue mt-0.5 shrink-0" />
-                <span>الجزائر العاصمة، الجزائر</span>
+                <span>تبسة، الجزائر</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-accent-blue shrink-0" />
-                <span className="font-numbers tracking-wide">+213 (0) 555 00 00 00</span>
+                <span className="font-numbers tracking-wide" dir="ltr">+213 540 87 33 74</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-accent-blue shrink-0" />
