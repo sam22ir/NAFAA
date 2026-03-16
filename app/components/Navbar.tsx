@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Search, ShoppingCart, User } from "lucide-react";
 import CartSidebar from "./CartSidebar";
@@ -12,8 +13,8 @@ import ThemeToggle from "./ThemeToggle";
 export default function Navbar() {
   const { user, profile, loading } = useAuth();
   const { totalItems } = useCart();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,21 +24,27 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Determine navbar colors based on page and scroll
+  const isTransparent = isHome && !isScrolled;
+  const navBgClass = isTransparent 
+    ? "bg-transparent border-transparent py-6"
+    : isScrolled 
+      ? "bg-brand-white/95 backdrop-blur-md border-light-grey shadow-sm py-4"
+      : "bg-brand-white border-transparent py-6";
+  
+  const textColorClass = isTransparent ? "text-brand-white" : "text-primary-dark";
+
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
-          isScrolled 
-            ? "bg-brand-white/95 backdrop-blur-md border-light-grey shadow-sm py-4" 
-            : "bg-brand-white border-transparent py-6"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${navBgClass}`}
         dir="ltr"
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
           
           {/* Left: Navigation Links */}
           <div className="flex-1 flex justify-start overflow-x-auto no-scrollbar">
-            <ul className="flex items-center gap-4 md:gap-8 list-none m-0 p-0 text-[10px] md:text-sm font-black uppercase tracking-widest font-montserrat text-primary-dark whitespace-nowrap">
+            <ul className={`flex items-center gap-4 md:gap-8 list-none m-0 p-0 text-[10px] md:text-sm font-black uppercase tracking-widest font-montserrat whitespace-nowrap ${textColorClass}`}>
               <li><Link href="/" className="hover:text-accent-blue transition-colors">Home</Link></li>
               <li><Link href="/shop" className="hover:text-accent-blue transition-colors">Shop</Link></li>
               <li><Link href="/new-arrivals" className="hover:text-accent-blue transition-colors">New</Link></li>
@@ -48,14 +55,14 @@ export default function Navbar() {
           {/* Center: Logo */}
           <div className="flex-1 flex justify-center flex-shrink-0 px-2 md:px-0">
             <Link href="/">
-              <span className="text-xl md:text-3xl font-black tracking-tighter uppercase font-montserrat text-primary-dark">
+              <span className={`text-xl md:text-3xl font-black tracking-tighter uppercase font-montserrat ${textColorClass}`}>
                 NAFAA
               </span>
             </Link>
           </div>
 
           {/* Right: Icons */}
-          <div className="flex-1 flex justify-end items-center gap-3 md:gap-6 text-primary-dark">
+          <div className={`flex-1 flex justify-end items-center gap-3 md:gap-6 ${textColorClass}`}>
             <ThemeToggle />
             
             <Link href="/shop" className="hover:text-accent-blue transition-colors p-1">
