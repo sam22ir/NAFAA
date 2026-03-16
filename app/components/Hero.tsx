@@ -11,7 +11,7 @@ export default function Hero() {
         </h2>
         
         <h1 className="text-brand-white text-5xl md:text-8xl font-black uppercase tracking-tighter mb-8 leading-tight font-montserrat">
-          NAFAA <span className="text-accent-blue">BRAND</span>
+          NAFAA
         </h1>
 
         <p className="text-light-grey text-lg md:text-xl font-tajawal mb-12 max-w-2xl mx-auto leading-relaxed">

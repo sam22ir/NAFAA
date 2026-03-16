@@ -13,6 +13,21 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) return;
+    setLoading(true);
+    try {
+      await AuthService.signInWithEmail(email, password);
+      router.push("/");
+    } catch (error: any) {
+      console.error("Login error:", error);
+      alert(error.message || "Login failed. Please check your credentials.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
@@ -41,7 +56,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-6" onSubmit={handleSignIn}>
           <div className="space-y-2">
             <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark font-montserrat block">
               Email Address
@@ -79,9 +94,13 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <button className="w-full bg-primary-dark text-brand-white py-4 font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-accent-blue transition-all duration-300 shadow-lg shadow-primary-dark/20">
-            Sign In
-            <ArrowRight size={18} />
+          <button 
+            type="submit"
+            disabled={loading}
+            className="w-full bg-primary-dark text-brand-white py-4 font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-accent-blue transition-all duration-300 shadow-lg shadow-primary-dark/20 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Signing In..." : "Sign In"}
+            {!loading && <ArrowRight size={18} />}
           </button>
         </form>
 

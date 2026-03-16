@@ -56,25 +56,39 @@ export default function Navbar() {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            <button className={`p-2 hover:text-accent-blue transition-colors ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}>
+            <Link href="/shop" className={`p-2 hover:text-accent-blue transition-colors ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}>
               <Search size={22} />
-            </button>
+            </Link>
             
             {!loading && (
               user ? (
-                <div className="group relative">
-                  <button className={`p-2 hover:text-accent-blue transition-colors ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}>
-                    <User size={22} />
-                  </button>
-                  <div className="absolute top-full left-0 mt-2 w-48 bg-brand-white shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-light-grey py-2">
-                    <Link href="/account" className="block px-6 py-3 text-xs font-bold uppercase tracking-widest text-primary-dark hover:bg-light-grey font-montserrat">My Account</Link>
-                    <button 
-                      onClick={() => AuthService.logout()}
-                      className="w-full text-left px-6 py-3 text-xs font-bold uppercase tracking-widest text-alert hover:bg-light-grey font-montserrat"
-                    >
-                      Logout
+                <div className="flex gap-4 items-center">
+                  <div className="group relative">
+                    <button className={`p-2 hover:text-accent-blue transition-colors ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}>
+                      <User size={22} />
                     </button>
+                    <div className="absolute top-full left-0 mt-2 w-48 bg-brand-white shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-light-grey py-2">
+                      <Link href="/account" className="block px-6 py-3 text-xs font-bold uppercase tracking-widest text-primary-dark hover:bg-light-grey font-montserrat">My Account</Link>
+                      <button 
+                        onClick={() => AuthService.logout()}
+                        className="w-full text-left px-6 py-3 text-xs font-bold uppercase tracking-widest text-alert hover:bg-light-grey font-montserrat"
+                      >
+                        Logout
+                      </button>
+                    </div>
                   </div>
+                  
+                  <button 
+                    onClick={() => setIsCartOpen(true)}
+                    className={`relative p-2 hover:text-accent-blue transition-colors ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}
+                  >
+                    <ShoppingCart size={22} />
+                    {totalItems > 0 && (
+                      <span className="absolute top-0 right-0 bg-alert text-brand-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full font-numbers">
+                        {totalItems}
+                      </span>
+                    )}
+                  </button>
                 </div>
               ) : (
                 <Link href="/login" className={`p-2 hover:text-accent-blue transition-colors ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}>
@@ -82,18 +96,6 @@ export default function Navbar() {
                 </Link>
               )
             )}
-
-            <button 
-              onClick={() => setIsCartOpen(true)}
-              className={`relative p-2 hover:text-accent-blue transition-colors ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}
-            >
-              <ShoppingCart size={22} />
-              {totalItems > 0 && (
-                <span className="absolute top-0 right-0 bg-alert text-brand-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full font-numbers">
-                  {totalItems}
-                </span>
-              )}
-            </button>
           </div>
         </div>
 
@@ -108,13 +110,22 @@ export default function Navbar() {
             </ul>
             <div className="pt-4 border-t border-light-grey">
               {user ? (
-                <button 
-                  onClick={() => { AuthService.logout(); setIsMobileMenuOpen(false); }}
-                  className="flex items-center gap-2 font-bold text-alert"
-                >
-                  <X size={20} />
-                  <span>تسجيل الخروج</span>
-                </button>
+                <div className="flex flex-col gap-4">
+                  <button 
+                    onClick={() => { setIsCartOpen(true); setIsMobileMenuOpen(false); }}
+                    className="flex items-center gap-2 font-bold"
+                  >
+                    <ShoppingCart size={20} />
+                    <span>سلة المشتريات ({totalItems})</span>
+                  </button>
+                  <button 
+                    onClick={() => { AuthService.logout(); setIsMobileMenuOpen(false); }}
+                    className="flex items-center gap-2 font-bold text-alert"
+                  >
+                    <X size={20} />
+                    <span>تسجيل الخروج</span>
+                  </button>
+                </div>
               ) : (
                 <Link href="/login" className="flex items-center gap-2 font-bold" onClick={() => setIsMobileMenuOpen(false)}>
                   <User size={20} />

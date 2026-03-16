@@ -3,7 +3,7 @@
 import { MessageCircle } from "lucide-react";
 
 export default function WhatsAppButton() {
-  const WHATSAPP_NUMBER = "+213000000000"; // Replace with verified business number from spec
+  const WHATSAPP_NUMBER = "+213540873374";
   const MESSAGE = encodeURIComponent("مرحباً فريق نافع، أرغب في الاستفسار عن ...");
 
   return (

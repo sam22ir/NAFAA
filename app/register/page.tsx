@@ -47,12 +47,15 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      // In a real app, you'd extend AuthService to handle email/pass or use Firebase directly
-      // For this demo, we'll suggest using AuthService.signInWithGoogle or similar
-      // but for completeness, let's assume we implement signUp in AuthService
-      // await AuthService.signUp(formData); 
+      await AuthService.signUpWithEmail(
+        formData.email,
+        formData.password,
+        formData.fullName,
+        formData.phone,
+        formData.wilaya
+      );
       
-      // Temporary logic to simulate success and redirect
+      // On success, redirect to login
       setTimeout(() => {
         router.push("/login");
       }, 1500);
@@ -80,7 +83,7 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={(e) => e.preventDefault()}>
+        <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={handleRegister}>
           {/* Full Name */}
           <div className="space-y-2">
             <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark font-montserrat block">
@@ -90,6 +93,9 @@ export default function RegisterPage() {
               <input
                 type="text"
                 placeholder="الاسم الكامل"
+                value={formData.fullName}
+                onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                required
                 className="w-full bg-light-grey border-none p-4 pl-12 text-sm font-bold font-tajawal focus:ring-2 focus:ring-accent-blue outline-none transition-all"
               />
               <User className="absolute left-4 top-1/2 -translate-y-1/2 text-dark-grey" size={18} />
@@ -105,6 +111,9 @@ export default function RegisterPage() {
               <input
                 type="email"
                 placeholder="name@example.com"
+                value={formData.email}
+                onChange={(e) => setFormData({...formData, email: e.target.value})}
+                required
                 className="w-full bg-light-grey border-none p-4 pl-12 text-sm font-bold font-tajawal focus:ring-2 focus:ring-accent-blue outline-none transition-all"
               />
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-dark-grey" size={18} />
@@ -120,6 +129,9 @@ export default function RegisterPage() {
               <input
                 type="tel"
                 placeholder="0XXXXXXXXX"
+                value={formData.phone}
+                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                required
                 className="w-full bg-light-grey border-none p-4 pl-12 text-sm font-bold font-tajawal focus:ring-2 focus:ring-accent-blue outline-none transition-all"
               />
               <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-dark-grey" size={18} />
@@ -132,7 +144,12 @@ export default function RegisterPage() {
               Wilaya (الولاية)
             </label>
             <div className="relative">
-              <select className="w-full bg-light-grey border-none p-4 pl-12 text-sm font-bold font-tajawal focus:ring-2 focus:ring-accent-blue outline-none transition-all appearance-none cursor-pointer">
+              <select 
+                value={formData.wilaya}
+                onChange={(e) => setFormData({...formData, wilaya: e.target.value})}
+                required
+                className="w-full bg-light-grey border-none p-4 pl-12 text-sm font-bold font-tajawal focus:ring-2 focus:ring-accent-blue outline-none transition-all appearance-none cursor-pointer"
+              >
                 <option value="">اختر الولاية</option>
                 {WILAYAS.map(w => <option key={w} value={w}>{w}</option>)}
               </select>
@@ -149,6 +166,9 @@ export default function RegisterPage() {
               <input
                 type="password"
                 placeholder="••••••••"
+                value={formData.password}
+                onChange={(e) => setFormData({...formData, password: e.target.value})}
+                required
                 className="w-full bg-light-grey border-none p-4 pl-12 text-sm font-bold font-tajawal focus:ring-2 focus:ring-accent-blue outline-none transition-all"
               />
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-dark-grey" size={18} />
@@ -164,6 +184,9 @@ export default function RegisterPage() {
               <input
                 type="password"
                 placeholder="••••••••"
+                value={formData.confirmPassword}
+                onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                required
                 className="w-full bg-light-grey border-none p-4 pl-12 text-sm font-bold font-tajawal focus:ring-2 focus:ring-accent-blue outline-none transition-all"
               />
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-dark-grey" size={18} />
@@ -171,9 +194,18 @@ export default function RegisterPage() {
           </div>
 
           <div className="md:col-span-2 mt-4">
-            <button className="w-full bg-primary-dark text-brand-white py-4 font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-accent-blue transition-all duration-300 shadow-lg shadow-primary-dark/20">
-              Create Account
-              <UserPlus size={18} />
+            {error && (
+              <div className="md:col-span-2 text-center text-red-500 font-bold font-tajawal text-sm mt-2 mb-2">
+                {error}
+              </div>
+            )}
+            <button 
+              type="submit"
+              disabled={loading}
+              className="w-full bg-primary-dark text-brand-white py-4 font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-accent-blue transition-all duration-300 shadow-lg shadow-primary-dark/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? "Creating Account..." : "Create Account"}
+              {!loading && <UserPlus size={18} />}
             </button>
           </div>
         </form>
