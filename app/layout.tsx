@@ -1,37 +1,8 @@
 import type { Metadata } from "next";
-import { Cairo, Tajawal, Montserrat, Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
-
-const cairo = Cairo({
-  variable: "--font-cairo",
-  subsets: ["arabic", "latin"],
-  weight: ["400", "700"],
-});
-
-const tajawal = Tajawal({
-  variable: "--font-tajawal",
-  subsets: ["arabic"],
-  weight: ["400", "500", "700"],
-});
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["700", "900"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const robotoMono = Roboto_Mono({
-  variable: "--font-roboto-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "NAFAA | Men's Streetwear & Sportswear",
@@ -65,9 +36,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ar" dir="rtl">
-      <body
-        className={`${cairo.variable} ${tajawal.variable} ${montserrat.variable} ${inter.variable} ${robotoMono.variable} antialiased min-h-screen flex flex-col`}
-      >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;900&family=Roboto+Mono&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+        <style dangerouslySetInnerHTML={{__html: `
+          :root {
+            --font-cairo: 'Cairo', sans-serif;
+            --font-tajawal: 'Tajawal', sans-serif;
+            --font-montserrat: 'Montserrat', sans-serif;
+            --font-inter: 'Inter', sans-serif;
+            --font-roboto-mono: 'Roboto Mono', monospace;
+          }
+        `}} />
+      </head>
+      <body className="antialiased min-h-screen flex flex-col font-cairo">
         <AuthProvider>
           <CartProvider>
             <PromoBanner />
@@ -81,4 +64,3 @@ export default function RootLayout({
     </html>
   );
 }
-
