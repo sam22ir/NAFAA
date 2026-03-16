@@ -17,7 +17,7 @@ export const AuthService = {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       
-      // Sync with Supabase profiles
+      // Sync with Supabase profiles using INSERT (ignores if already exists)
       await syncUserWithSupabase(user);
       
       return user;
@@ -38,20 +38,20 @@ export const AuthService = {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       const user = result.user;
       
-      // Sync with Supabase profiles
+      // Sync with Supabase profiles using INSERT
       const { error } = await supabase
         .from('profiles')
-        .upsert({
+        .insert({
           id: user.uid,
           full_name: fullName,
           email: user.email,
           phone: phone,
           wilaya: wilaya,
           updated_at: new Date().toISOString(),
-        }, { onConflict: 'id' });
+        });
 
-      if (error) {
-        console.error("Error syncing profile with Supabase:", error);
+      if (error && error.code !== '23505') { // Ignore unique_violation
+        console.error("Error syncing profile with Supabase:", error.message);
       }
       
       return user;
@@ -73,19 +73,19 @@ export const AuthService = {
   },
 };
 
-// Helper: Sync Firebase user to Supabase 'profiles' table
+// Helper: Sync Firebase user to Supabase 'profiles' table via INSERT
 async function syncUserWithSupabase(user: any) {
   const { data, error } = await supabase
     .from('profiles')
-    .upsert({
+    .insert({
       id: user.uid,
       full_name: user.displayName,
       email: user.email,
       updated_at: new Date().toISOString(),
-    }, { onConflict: 'id' });
+    });
 
-  if (error) {
-    console.error("Error syncing user with Supabase:", error);
+  if (error && error.code !== '23505') { // Ignore unique violation if user exists
+    console.error("Error syncing user with Supabase:", error.message);
   }
   return data;
 }
