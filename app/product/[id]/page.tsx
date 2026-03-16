@@ -2,10 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { ShoppingBag, Heart, Share2, ShieldCheck, Truck, RefreshCw, Loader2 } from "lucide-react";
+import { ShoppingBag, Heart, Share2, ShieldCheck, Truck, RefreshCw, Loader2, Ruler } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useCart } from "@/context/CartContext";
+import SizeGuideModal from "@/app/components/SizeGuideModal";
+import BackInStockForm from "@/app/components/BackInStockForm";
+import CompleteTheLook from "@/app/components/CompleteTheLook";
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
   const [product, setProduct] = useState<any>(null);
@@ -14,6 +17,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
   const [isBackInStockOpen, setIsBackInStockOpen] = useState(false);
   const [isComparing, setIsComparing] = useState(false);
+  const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [reviews, setReviews] = useState<any[]>([]);
   const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
@@ -347,7 +351,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                       </span>
                     )}
                   </div>
-                  <p className="text-dark-grey font-tajawal text-sm leading-relaxed">
+                <p className="text-dark-grey font-tajawal text-sm leading-relaxed">
                     {rev.comment}
                   </p>
                   <span className="text-[10px] text-light-grey font-numbers mt-6 block">
@@ -358,7 +362,17 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             )}
           </div>
         </div>
+
+        {/* ── Complete the Look ──────────────────────── */}
+        <CompleteTheLook productId={product.id} category={product.category} />
       </div>
+
+      {/* Size Guide Modal */}
+      <SizeGuideModal
+        isOpen={isSizeGuideOpen}
+        onClose={() => setIsSizeGuideOpen(false)}
+        category={product.category}
+      />
     </div>
   );
 }
