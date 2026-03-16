@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { User, Mail, Phone, MapPin, Lock, UserPlus, ArrowRight, Loader2 } from "lucide-react";
+import { User, Mail, Phone, MapPin, Lock, UserPlus, ArrowRight, Loader2, Chrome } from "lucide-react";
 import { AuthService } from "@/lib/services/auth-service";
 import { useRouter } from "next/navigation";
 
@@ -209,6 +209,32 @@ export default function RegisterPage() {
             </button>
           </div>
         </form>
+
+        <div className="my-8 flex items-center gap-4">
+          <div className="flex-grow h-[1px] bg-light-blue/20"></div>
+          <span className="text-[10px] font-black uppercase tracking-widest text-dark-grey font-montserrat">OR</span>
+          <div className="flex-grow h-[1px] bg-light-blue/20"></div>
+        </div>
+
+        <button 
+          onClick={async () => {
+            setLoading(true);
+            try {
+              await AuthService.signInWithGoogle();
+              router.push("/");
+            } catch (error: any) {
+              console.error(error);
+              alert(error.message || "فشل التسجيل عبر جوجل. ربما لم تفعل هذا الخيار في إعدادات Firebase.");
+            } finally {
+              setLoading(false);
+            }
+          }}
+          disabled={loading}
+          className="w-full bg-brand-white border border-light-blue/40 text-primary-dark py-4 font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-light-grey transition-all duration-300"
+        >
+          <Chrome size={18} />
+          Sign Up with Google
+        </button>
 
         <div className="mt-10 text-center border-t border-light-blue/20 pt-8">
           <p className="text-xs text-dark-grey font-tajawal font-bold uppercase tracking-widest">

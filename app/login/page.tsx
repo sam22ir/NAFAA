@@ -33,8 +33,9 @@ export default function LoginPage() {
     try {
       await AuthService.signInWithGoogle();
       router.push("/");
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      alert(error.message || "فشل تسجيل الدخول عبر جوجل. قد لا يكون هذا الخيار مفعلًا في Firebase بعد.");
     } finally {
       setLoading(false);
     }
