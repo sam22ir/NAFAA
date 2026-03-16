@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+/* ─── NAFAA Brand Specification v1.0 ──────────────────────── */
+@theme inline {
+  /* Fonts */
+  --font-cairo: var(--font-cairo);
+  --font-tajawal: var(--font-tajawal);
+  --font-montserrat: var(--font-montserrat);
+  --font-inter: var(--font-inter);
+  --font-roboto-mono: var(--font-roboto-mono);
+
+  /* Brand Colors */
+  --color-primary-dark: #0D2137;
+  --color-secondary-dark: #1A3A5C;
+  --color-accent-blue: #2E5F8A;
+  --color-light-blue: #D6E8F7;
+  --color-brand-white: #FFFFFF;
+  --color-brand-black: #111111;
+  --color-dark-grey: #555555;
+  --color-light-grey: #F5F7FA;
+  --color-success: #2DC653;
+  --color-alert: #E63946;
+}
+
+/* ─── Base Styles ────────────────────────────────────────────── */
+:root {
+  --foreground: var(--color-brand-black);
+  --background: var(--color-brand-white);
+}
+
+html, body {
+  direction: rtl; /* Default for Arabic (Algeria Market) */
+  background-color: var(--color-brand-white);
+  color: var(--color-brand-black);
+  font-family: var(--font-tajawal), var(--font-inter), sans-serif;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-montserrat), var(--font-cairo), sans-serif;
+  font-weight: 700;
+}
+
+.font-numbers {
+  font-family: var(--font-roboto-mono), monospace;
+}
+
+@keyframes float-text {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-float-text {
+  animation: float-text 30s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
