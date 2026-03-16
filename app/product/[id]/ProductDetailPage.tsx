@@ -14,6 +14,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
   const [selectedImage, setSelectedImage] = useState(0);
   const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
   const [isComparing, setIsComparing] = useState(false);
@@ -36,6 +37,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         setProduct(data);
         if (data.sizes && data.sizes.length > 0) {
           setSelectedSize(data.sizes[0]);
+        }
+        if (data.colors && data.colors.length > 0) {
+          setSelectedColor(data.colors[0]);
         }
 
         // Related Products
@@ -68,7 +72,11 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       alert("الرجاء اختيار المقاس");
       return;
     }
-    addItem({ ...product, selectedSize, quantity: 1 });
+    if (!selectedColor && product?.colors?.length > 0) {
+      alert("الرجاء اختيار اللون");
+      return;
+    }
+    addItem({ ...product, selectedSize, selectedColor, quantity: 1 });
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
   };
@@ -200,6 +208,28 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               <p className="font-tajawal text-dark-grey text-sm leading-relaxed mb-6">
                 {product.description}
               </p>
+            )}
+
+            {/* Color selector */}
+            {product.colors && product.colors.length > 0 && (
+              <div className="mb-6">
+                <span className="text-[10px] font-black uppercase tracking-widest text-primary-dark font-montserrat mb-3 block">اللون</span>
+                <div className="flex flex-wrap gap-2">
+                  {product.colors.map((color: string) => (
+                    <button
+                      key={color}
+                      onClick={() => setSelectedColor(color)}
+                      className={`h-10 px-4 border-2 font-bold font-tajawal text-xs transition-all ${
+                        selectedColor === color
+                          ? "border-primary-dark bg-primary-dark text-brand-white"
+                          : "border-light-grey hover:border-primary-dark text-primary-dark bg-light-grey"
+                      }`}
+                    >
+                      {color}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
 
             {/* Size selector */}

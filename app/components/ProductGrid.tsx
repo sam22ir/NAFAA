@@ -15,43 +15,51 @@ export default function ProductGrid({ categoryId, sortOption = "newest" }: Produ
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
+    const fetchProducts = async () => {
+      setLoading(true);
+      let query = supabase
+        .from("products")
+        .select(`
+          *,
+          categories (
+            name_ar,
+            name_en
+          )
+        `)
+        .eq("is_active", true);
+
+      if (categoryId && categoryId !== "all") {
+        query = query.eq("category_id", categoryId);
+      }
+
+      if (sortOption === "price_asc") {
+        query = query.order("price_dzd", { ascending: true });
+      } else if (sortOption === "price_desc") {
+        query = query.order("price_dzd", { ascending: false });
+      } else {
+        query = query.order("created_at", { ascending: false });
+      }
+
+      const { data, error } = await query;
+
+      if (!isMounted) return;
+
+      if (error) {
+        console.error("Error fetching products with sorting:", error);
+      } else {
+        setProducts(data || []);
+      }
+      setLoading(false);
+    };
+
     fetchProducts();
+
+    return () => {
+      isMounted = false;
+    };
   }, [categoryId, sortOption]);
-
-  const fetchProducts = async () => {
-    setLoading(true);
-    let query = supabase
-      .from("products")
-      .select(`
-        *,
-        categories (
-          name_ar,
-          name_en
-        )
-      `)
-      .eq("is_active", true);
-
-    if (categoryId && categoryId !== "all") {
-      query = query.eq("category_id", categoryId);
-    }
-
-    if (sortOption === "price_asc") {
-      query = query.order("price_dzd", { ascending: true });
-    } else if (sortOption === "price_desc") {
-      query = query.order("price_dzd", { ascending: false });
-    } else {
-      query = query.order("created_at", { ascending: false });
-    }
-
-    const { data, error } = await query;
-
-    if (error) {
-      console.error("Error fetching products:", error);
-    } else {
-      setProducts(data || []);
-    }
-    setLoading(false);
-  };
 
   if (loading) {
     return (

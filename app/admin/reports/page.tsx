@@ -23,7 +23,7 @@ export default function AdminReportsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!authLoading && profile?.role !== 'admin') {
+    if (!authLoading && !profile?.is_admin && profile?.role !== 'admin') {
       router.push("/");
     }
   }, [profile, authLoading, router]);
@@ -71,7 +71,7 @@ export default function AdminReportsPage() {
   const maxCount = reportData.length > 0 ? reportData[0].count : 1;
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB] pt-24 pb-20 px-6">
+    <div className="min-h-screen bg-light-grey pt-24 pb-20 px-6">
       <div className="max-w-6xl mx-auto">
         <header className="mb-16">
           <div className="flex items-center gap-3 text-accent-blue mb-4">

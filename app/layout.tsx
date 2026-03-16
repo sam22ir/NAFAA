@@ -14,13 +14,15 @@ export const metadata: Metadata = {
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 
+import { ThemeProvider } from "./components/ThemeProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar" suppressHydrationWarning dir="rtl">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -35,15 +37,17 @@ export default function RootLayout({
           }
         `}} />
       </head>
-      <body className="antialiased min-h-screen flex flex-col font-cairo">
-        <AuthProvider>
-          <CartProvider>
-            <Navbar />
-            <main className="flex-grow pt-16 md:pt-20">{children}</main>
-            <Footer />
-            <WhatsAppButton />
-          </CartProvider>
-        </AuthProvider>
+      <body className="antialiased min-h-screen flex flex-col font-cairo bg-brand-white text-brand-black transition-colors duration-300">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <AuthProvider>
+            <CartProvider>
+              <Navbar />
+              <main className="flex-grow pt-16 md:pt-20">{children}</main>
+              <Footer />
+              <WhatsAppButton />
+            </CartProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

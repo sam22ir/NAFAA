@@ -28,7 +28,7 @@ export default function AdminStatsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!authLoading && profile?.role !== 'admin') {
+    if (!authLoading && !profile?.is_admin && profile?.role !== 'admin') {
       router.push("/");
     }
   }, [profile, authLoading, router]);
@@ -81,7 +81,7 @@ export default function AdminStatsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB] pt-24 pb-20 px-6">
+    <div className="min-h-screen bg-light-grey pt-24 pb-20 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>

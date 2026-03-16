@@ -7,9 +7,10 @@ import CartSidebar from "./CartSidebar";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { AuthService } from "@/lib/services/auth-service";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
-  const { user, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
   const { totalItems } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -55,6 +56,8 @@ export default function Navbar() {
 
           {/* Right: Icons */}
           <div className="flex-1 flex justify-end items-center gap-3 md:gap-6 text-primary-dark">
+            <ThemeToggle />
+            
             <Link href="/shop" className="hover:text-accent-blue transition-colors p-1">
               <Search size={18} className="md:w-6 md:h-6" />
             </Link>
@@ -68,6 +71,9 @@ export default function Navbar() {
                     </button>
                     <div className="absolute top-full right-0 mt-4 w-48 bg-brand-white shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-light-grey py-2 z-50">
                       <Link href="/account" className="block px-6 py-3 text-xs font-bold uppercase tracking-widest text-primary-dark hover:bg-light-grey font-montserrat text-left">My Account</Link>
+                      {(profile?.is_admin || profile?.role === 'admin') && (
+                        <Link href="/admin" className="block px-6 py-3 text-xs font-bold uppercase tracking-widest text-accent-blue hover:bg-light-grey font-montserrat text-left">Admin Panel</Link>
+                      )}
                       <button 
                         onClick={() => AuthService.logout()}
                         className="w-full text-left px-6 py-3 text-xs font-bold uppercase tracking-widest text-alert hover:bg-light-grey font-montserrat"

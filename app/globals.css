@@ -22,6 +22,19 @@
   --color-alert: #E63946;
 }
 
+@layer base {
+  .dark {
+    --color-primary-dark: #F5F7FA;
+    --color-secondary-dark: #D6E8F7;
+    --color-accent-blue: #3A78AC;
+    --color-light-blue: #1A3A5C;
+    --color-brand-white: #111111;
+    --color-brand-black: #F5F7FA;
+    --color-dark-grey: #AAAAAA;
+    --color-light-grey: #222222;
+  }
+}
+
 /* ─── Base Styles ────────────────────────────────────────────── */
 :root {
   --foreground: var(--color-brand-black);

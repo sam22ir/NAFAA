@@ -42,7 +42,7 @@ export default function OrderTrackingPage() {
   const currentStepIndex = order ? STEPS.findIndex(s => s.key === order.status) : -1;
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB] pt-24 pb-20 px-4">
+    <div className="min-h-screen bg-light-grey pt-24 pb-20 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">

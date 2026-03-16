@@ -64,7 +64,7 @@ export default function AccountPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB] pt-24 pb-20 px-4">
+    <div className="min-h-screen bg-light-grey pt-24 pb-20 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10">
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-blue font-montserrat mb-3">MY ACCOUNT</p>

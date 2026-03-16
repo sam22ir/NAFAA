@@ -29,7 +29,7 @@ export default function NewArrivalsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB] pt-24 pb-20">
+    <div className="min-h-screen bg-light-grey pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-blue font-montserrat mb-3">NEW SEASON</p>

@@ -42,11 +42,11 @@ export default function AdminProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   useEffect(() => {
-    if (!authLoading && (!user || profile?.role !== 'admin')) {
-      // router.push("/login"); // Uncomment for strict RBAC
+    if (!authLoading && (!user || (!profile?.is_admin && profile?.role !== 'admin'))) {
+      router.push("/");
     }
     fetchProducts();
-  }, [authLoading, user, profile]);
+  }, [authLoading, user, profile, router]);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -75,7 +75,7 @@ export default function AdminProductsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB] pt-24 pb-12 px-6">
+    <div className="min-h-screen bg-light-grey pt-24 pb-12 px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">

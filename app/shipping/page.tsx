@@ -11,7 +11,7 @@ const DELIVERY_INFO = [
 
 export default function ShippingPage() {
   return (
-    <div className="min-h-screen bg-[#F8F9FB] pt-24 pb-20 px-4">
+    <div className="min-h-screen bg-light-grey pt-24 pb-20 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">

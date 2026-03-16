@@ -218,7 +218,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB] pt-24 pb-20 px-6">
+    <div className="min-h-screen bg-light-grey pt-24 pb-20 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-12">
           <h1 className="text-4xl font-black uppercase tracking-tighter mb-2 font-montserrat">CHECK<span className="text-accent-blue">OUT</span></h1>

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Heart, ShieldCheck, Truck } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { useCart } from "@/context/CartContext";
 
 interface QuickViewModalProps {
   product: any;
@@ -12,7 +13,9 @@ interface QuickViewModalProps {
 }
 
 export default function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps) {
-  const [selectedSize, setSelectedSize] = useState("L");
+  const [selectedSize, setSelectedSize] = useState("");
+  const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
 
   if (!product) return null;
 
@@ -39,7 +42,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
 
             {/* Image Section */}
             <div className="w-full md:w-1/2 aspect-[3/4] bg-light-grey relative">
-              <Image src={product.image_url} alt={product.name_ar} fill className="object-cover" />
+              <Image src={product.image_urls?.[0] || "/placeholder-product.jpg"} alt={product.name_ar} fill className="object-cover" />
             </div>
 
             {/* Content Section */}
@@ -57,8 +60,8 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
 
               <div className="mb-8">
                 <h3 className="text-xs font-black uppercase tracking-widest text-primary-dark mb-4 font-montserrat">المقاس</h3>
-                <div className="flex gap-2">
-                  {["S", "M", "L", "XL"].map((size) => (
+                <div className="flex flex-wrap gap-2">
+                  {(product.sizes || ["S", "M", "L", "XL"]).map((size: string) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
@@ -72,9 +75,22 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                 </div>
               </div>
 
-              <button className="w-full bg-primary-dark text-brand-white py-4 font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-accent-blue transition-all duration-300 mb-6">
+              <button 
+                onClick={() => {
+                  if (product.sizes?.length > 0 && !selectedSize) {
+                    alert("الرجاء تحديد المقاس");
+                    return;
+                  }
+                  addItem({ ...product, selectedSize, quantity: 1 });
+                  setAdded(true);
+                  setTimeout(() => { setAdded(false); onClose(); }, 1500);
+                }}
+                className={`w-full py-4 font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all duration-300 mb-6 ${
+                  added ? "bg-success text-brand-white" : "bg-primary-dark text-brand-white hover:bg-accent-blue"
+                }`}
+              >
                 <ShoppingBag size={20} />
-                إضافة للسلة
+                {added ? "تمت الإضافة" : "إضافة للسلة"}
               </button>
 
               <div className="mt-auto space-y-4 pt-6 border-t border-light-grey">

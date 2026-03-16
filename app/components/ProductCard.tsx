@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ShoppingCart, Eye } from "lucide-react";
+import { useState } from "react";
+import QuickViewModal from "./QuickViewModal";
 
 interface ProductCardProps {
   id: string;
@@ -33,6 +35,7 @@ export default function ProductCard({
   const mainImage = image_urls?.[0] || "/placeholder-product.jpg";
   const hoverImage = image_urls?.[1] || mainImage;
   const categoryName = categories?.name_ar || "منتج";
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
   return (
     <div className="group relative flex flex-col bg-brand-white transition-all duration-300">
@@ -80,13 +83,16 @@ export default function ProductCard({
             <ShoppingCart size={14} />
             إضافة للسلة
           </Link>
-          <Link
-            href={`/product/${id}`}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setIsQuickViewOpen(true);
+            }}
             className="p-3 bg-brand-white/20 backdrop-blur-md text-brand-white hover:bg-brand-white hover:text-primary-dark transition-colors duration-200"
             title="مشاهدة التفاصيل"
           >
             <Eye size={16} />
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -110,6 +116,12 @@ export default function ProductCard({
           )}
         </div>
       </div>
+
+      <QuickViewModal
+        isOpen={isQuickViewOpen}
+        onClose={() => setIsQuickViewOpen(false)}
+        product={{ id, name_ar, name_en, price_dzd, original_price: discount_price_dzd, image_urls, is_new: is_new_arrival, categories }}
+      />
     </div>
   );
 }
