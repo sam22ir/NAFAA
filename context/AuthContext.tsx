@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, signOut as firebaseSignOut, User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { supabase } from "@/lib/supabase";
 
@@ -18,12 +18,14 @@ interface AuthContextType {
   user: User | null;
   profile: Profile | null;
   loading: boolean;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   profile: null,
   loading: true,
+  signOut: async () => {},
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -34,33 +36,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
-      
+
       if (firebaseUser) {
-        // Fetch Supabase profile
         const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', firebaseUser.uid)
+          .from("profiles")
+          .select("*")
+          .eq("id", firebaseUser.uid)
           .single();
-          
+
         if (!error && data) {
           setProfile(data);
         } else {
-          console.error("Error fetching profile:", error);
           setProfile(null);
         }
       } else {
         setProfile(null);
       }
-      
+
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
+  const signOut = async () => {
+    await firebaseSignOut(auth);
+    setUser(null);
+    setProfile(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, profile, loading }}>
+    <AuthContext.Provider value={{ user, profile, loading, signOut }}>
       {!loading && children}
     </AuthContext.Provider>
   );
