@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Security — never commit temp scripts with credentials
+tmp_fix_*.js
+tmp_*.js
+.env.local
+.env*.local
+
