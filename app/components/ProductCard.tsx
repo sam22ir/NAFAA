@@ -36,10 +36,12 @@ export default function ProductCard({
 
   return (
     <div className="group relative flex flex-col bg-brand-white transition-all duration-300">
+      <Link href={`/product/${id}`} className="absolute inset-0 z-0" aria-label={`View ${name_ar}`} />
+      
       {/* Image Container */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-light-grey">
+      <div className="relative aspect-[3/4] overflow-hidden bg-light-grey pointer-events-none">
         {/* Main Image */}
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full block">
           <Image
             src={mainImage}
             alt={name_ar}
@@ -70,7 +72,7 @@ export default function ProductCard({
         </div>
 
         {/* Quick Add / Actions Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-primary-dark/60 to-transparent z-10 flex gap-2">
+        <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-primary-dark/60 to-transparent z-20 flex gap-2 pointer-events-auto">
           <Link 
             href={`/product/${id}`}
             className="flex-grow bg-brand-white text-primary-dark font-black text-[10px] uppercase tracking-widest py-3 flex items-center justify-center gap-2 hover:bg-accent-blue hover:text-brand-white transition-colors duration-200"
@@ -89,15 +91,15 @@ export default function ProductCard({
       </div>
 
       {/* Product Details */}
-      <div className="py-4 flex flex-col items-center text-center">
-        <span className="text-[10px] uppercase tracking-[0.2em] text-dark-grey font-bold mb-1 font-montserrat">
+      <div className="py-4 flex flex-col items-center text-center pointer-events-none">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-dark-grey font-bold mb-1 font-montserrat z-10 relative">
           {categoryName}
         </span>
-        <h3 className="text-sm font-bold text-brand-black mb-2 hover:text-accent-blue transition-colors font-tajawal">
-          <Link href={`/product/${id}`}>{name_ar}</Link>
+        <h3 className="text-sm font-bold text-brand-black mb-2 group-hover:text-accent-blue transition-colors font-tajawal z-10 relative">
+          {name_ar}
         </h3>
         
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 z-10 relative">
           <span className="text-base font-black text-primary-dark font-numbers">
             {price_dzd.toLocaleString()} دج
           </span>

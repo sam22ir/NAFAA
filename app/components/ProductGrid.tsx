@@ -7,15 +7,16 @@ import { Loader2, PackageOpen } from "lucide-react";
 
 interface ProductGridProps {
   categoryId?: string | number;
+  sortOption?: string;
 }
 
-export default function ProductGrid({ categoryId }: ProductGridProps) {
+export default function ProductGrid({ categoryId, sortOption = "newest" }: ProductGridProps) {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchProducts();
-  }, [categoryId]);
+  }, [categoryId, sortOption]);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -34,7 +35,15 @@ export default function ProductGrid({ categoryId }: ProductGridProps) {
       query = query.eq("category_id", categoryId);
     }
 
-    const { data, error } = await query.order("created_at", { ascending: false });
+    if (sortOption === "price_asc") {
+      query = query.order("price_dzd", { ascending: true });
+    } else if (sortOption === "price_desc") {
+      query = query.order("price_dzd", { ascending: false });
+    } else {
+      query = query.order("created_at", { ascending: false });
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       console.error("Error fetching products:", error);

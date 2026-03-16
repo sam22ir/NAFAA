@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, ShoppingCart, User, Menu, X } from "lucide-react";
+import { Search, ShoppingCart, User } from "lucide-react";
 import CartSidebar from "./CartSidebar";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
@@ -12,12 +12,11 @@ export default function Navbar() {
   const { user, loading } = useAuth();
   const { totalItems } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -26,49 +25,49 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-brand-white shadow-md py-2 text-primary-dark" : "bg-transparent py-4 text-brand-white"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+          isScrolled 
+            ? "bg-brand-white/95 backdrop-blur-md border-light-grey shadow-sm py-4" 
+            : "bg-brand-white border-transparent py-6"
         }`}
+        dir="ltr"
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Mobile Menu Toggle */}
-          <button
-            className="lg:hidden p-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+        <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
+          
+          {/* Left: Navigation Links */}
+          <div className="flex-1 flex justify-start overflow-x-auto no-scrollbar">
+            <ul className="flex items-center gap-4 md:gap-8 list-none m-0 p-0 text-[10px] md:text-sm font-black uppercase tracking-widest font-montserrat text-primary-dark whitespace-nowrap">
+              <li><Link href="/" className="hover:text-accent-blue transition-colors">Home</Link></li>
+              <li><Link href="/shop" className="hover:text-accent-blue transition-colors">Shop</Link></li>
+              <li><Link href="/new-arrivals" className="hover:text-accent-blue transition-colors">New</Link></li>
+              <li><Link href="/about" className="hover:text-accent-blue transition-colors">About</Link></li>
+            </ul>
+          </div>
 
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
-            <span className={`text-2xl font-black tracking-tighter uppercase font-montserrat ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}>
-              NAFAA
-            </span>
-          </Link>
+          {/* Center: Logo */}
+          <div className="flex-1 flex justify-center flex-shrink-0 px-2 md:px-0">
+            <Link href="/">
+              <span className="text-xl md:text-3xl font-black tracking-tighter uppercase font-montserrat text-primary-dark">
+                NAFAA
+              </span>
+            </Link>
+          </div>
 
-          {/* Desktop Navigation Links */}
-          <ul className="hidden lg:flex items-center gap-8 list-none m-0 p-0 text-sm font-bold uppercase tracking-widest">
-            <li><Link href="/" className="hover:text-accent-blue transition-colors">الرئيسية</Link></li>
-            <li><Link href="/shop" className="hover:text-accent-blue transition-colors">المتجر</Link></li>
-            <li><Link href="/new-arrivals" className="hover:text-accent-blue transition-colors">وصلنا حديثاً</Link></li>
-            <li><Link href="/about" className="hover:text-accent-blue transition-colors">عن نافع</Link></li>
-          </ul>
-
-          {/* Actions */}
-          <div className="flex items-center gap-4">
-            <Link href="/shop" className={`p-2 hover:text-accent-blue transition-colors ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}>
-              <Search size={22} />
+          {/* Right: Icons */}
+          <div className="flex-1 flex justify-end items-center gap-3 md:gap-6 text-primary-dark">
+            <Link href="/shop" className="hover:text-accent-blue transition-colors p-1">
+              <Search size={18} className="md:w-6 md:h-6" />
             </Link>
             
             {!loading && (
               user ? (
-                <div className="flex gap-4 items-center">
+                <div className="flex gap-3 md:gap-6 items-center">
                   <div className="group relative">
-                    <button className={`p-2 hover:text-accent-blue transition-colors ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}>
-                      <User size={22} />
+                    <button className="hover:text-accent-blue transition-colors p-1">
+                      <User size={18} className="md:w-6 md:h-6" />
                     </button>
-                    <div className="absolute top-full left-0 mt-2 w-48 bg-brand-white shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-light-grey py-2">
-                      <Link href="/account" className="block px-6 py-3 text-xs font-bold uppercase tracking-widest text-primary-dark hover:bg-light-grey font-montserrat">My Account</Link>
+                    <div className="absolute top-full right-0 mt-4 w-48 bg-brand-white shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-light-grey py-2 z-50">
+                      <Link href="/account" className="block px-6 py-3 text-xs font-bold uppercase tracking-widest text-primary-dark hover:bg-light-grey font-montserrat text-left">My Account</Link>
                       <button 
                         onClick={() => AuthService.logout()}
                         className="w-full text-left px-6 py-3 text-xs font-bold uppercase tracking-widest text-alert hover:bg-light-grey font-montserrat"
@@ -80,61 +79,25 @@ export default function Navbar() {
                   
                   <button 
                     onClick={() => setIsCartOpen(true)}
-                    className={`relative p-2 hover:text-accent-blue transition-colors ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}
+                    className="relative hover:text-accent-blue transition-colors p-1"
                   >
-                    <ShoppingCart size={22} />
+                    <ShoppingCart size={18} className="md:w-6 md:h-6" />
                     {totalItems > 0 && (
-                      <span className="absolute top-0 right-0 bg-alert text-brand-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full font-numbers">
+                      <span className="absolute -top-1 -right-2 bg-accent-blue text-brand-white text-[9px] md:text-[10px] font-black w-4 h-4 md:w-5 md:h-5 flex items-center justify-center rounded-full font-numbers border-2 border-brand-white">
                         {totalItems}
                       </span>
                     )}
                   </button>
                 </div>
               ) : (
-                <Link href="/login" className={`p-2 hover:text-accent-blue transition-colors ${isScrolled ? "text-primary-dark" : "text-brand-white"}`}>
-                  <User size={22} />
+                <Link href="/login" className="hover:text-accent-blue transition-colors p-1 flex items-center">
+                  <User size={18} className="md:w-6 md:h-6" />
                 </Link>
               )
             )}
           </div>
-        </div>
 
-        {/* Mobile Menu Overlay */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-brand-white border-t border-light-grey shadow-xl p-6 flex flex-col gap-6 text-brand-black">
-            <ul className="flex flex-col gap-4 list-none m-0 p-0 font-bold uppercase tracking-widest">
-              <li><Link href="/" onClick={() => setIsMobileMenuOpen(false)}>الرئيسية</Link></li>
-              <li><Link href="/shop" onClick={() => setIsMobileMenuOpen(false)}>المتجر</Link></li>
-              <li><Link href="/new-arrivals" onClick={() => setIsMobileMenuOpen(false)}>وصلنا حديثاً</Link></li>
-              <li><Link href="/about" onClick={() => setIsMobileMenuOpen(false)}>عن نافع</Link></li>
-            </ul>
-            <div className="pt-4 border-t border-light-grey">
-              {user ? (
-                <div className="flex flex-col gap-4">
-                  <button 
-                    onClick={() => { setIsCartOpen(true); setIsMobileMenuOpen(false); }}
-                    className="flex items-center gap-2 font-bold"
-                  >
-                    <ShoppingCart size={20} />
-                    <span>سلة المشتريات ({totalItems})</span>
-                  </button>
-                  <button 
-                    onClick={() => { AuthService.logout(); setIsMobileMenuOpen(false); }}
-                    className="flex items-center gap-2 font-bold text-alert"
-                  >
-                    <X size={20} />
-                    <span>تسجيل الخروج</span>
-                  </button>
-                </div>
-              ) : (
-                <Link href="/login" className="flex items-center gap-2 font-bold" onClick={() => setIsMobileMenuOpen(false)}>
-                  <User size={20} />
-                  <span>تسجيل الدخول</span>
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
+        </div>
       </nav>
 
       <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />

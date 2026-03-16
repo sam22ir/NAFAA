@@ -29,7 +29,7 @@ export default function CheckoutPage() {
   const [couponError, setCouponError] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
   const [wilayas, setWilayas] = useState<any[]>([]);
-  const [deliveryType, setDeliveryType] = useState<"home" | "desk">("home");
+  const [deliveryType, setDeliveryType] = useState<"home" | "desk">("desk");
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -127,7 +127,6 @@ export default function CheckoutPage() {
           commune: formData.commune,
           address: formData.address,
           delivery_type: deliveryType,
-          items: items.map(i => ({ id: i.id, name: i.name_ar, qty: i.quantity, price: i.price_dzd })),
           subtotal: subtotal,
           shipping_cost: shippingCost,
           discount: discountAmount,
@@ -284,11 +283,27 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark block font-montserrat">Shipping Method</label>
-                    <div className="flex items-center gap-3 bg-light-blue/5 p-4 border border-accent-blue/20 rounded-sm">
-                      <Truck className="text-accent-blue" size={20} />
-                      <div className="text-[10px] font-black uppercase tracking-widest text-primary-dark font-montserrat">Home Delivery</div>
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark block font-montserrat">Shipping Method / طريقة الشحن</label>
+                    <div className="grid grid-cols-2 gap-4">
+                      <button
+                        type="button"
+                        onClick={() => setDeliveryType("desk")}
+                        className={`flex flex-col items-center justify-center p-4 gap-2 border-2 rounded-sm transition-all ${deliveryType === "desk" ? "border-accent-blue bg-light-blue/5 text-accent-blue" : "border-light-grey text-dark-grey hover:border-primary-dark/20"}`}
+                      >
+                        <Home size={24} />
+                        <span className="text-[10px] font-black uppercase tracking-widest font-montserrat">Yalidine Office</span>
+                        <span className="text-xs font-bold font-tajawal">مكتب ياليدين</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDeliveryType("home")}
+                        className={`flex flex-col items-center justify-center p-4 gap-2 border-2 rounded-sm transition-all ${deliveryType === "home" ? "border-accent-blue bg-light-blue/5 text-accent-blue" : "border-light-grey text-dark-grey hover:border-primary-dark/20"}`}
+                      >
+                        <Truck size={24} />
+                        <span className="text-[10px] font-black uppercase tracking-widest font-montserrat">Home Delivery</span>
+                        <span className="text-xs font-bold font-tajawal">توصيل للمنزل</span>
+                      </button>
                     </div>
                   </div>
                 </div>

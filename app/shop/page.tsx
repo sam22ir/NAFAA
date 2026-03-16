@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase";
 export default function ShopPage() {
   const [categories, setCategories] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | number>("all");
+  const [sortOption, setSortOption] = useState<string>("newest");
 
   useEffect(() => {
     fetchCategories();
@@ -71,11 +72,14 @@ export default function ShopPage() {
                 ترتيب حسب
                 <Filter size={14} />
               </h3>
-              <select className="w-full bg-light-grey border-none text-sm font-bold font-tajawal p-3 focus:ring-1 focus:ring-accent-blue outline-none cursor-pointer">
-                <option>الأحدث أولاً</option>
-                <option>السعر: من الأقل للأعلى</option>
-                <option>السعر: من الأعلى للأقل</option>
-                <option>الأكثر مبيعاً</option>
+              <select 
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+                className="w-full bg-light-grey border-none text-sm font-bold font-tajawal p-3 focus:ring-1 focus:ring-accent-blue outline-none cursor-pointer"
+              >
+                <option value="newest">الأحدث أولاً</option>
+                <option value="price_asc">السعر: من الأقل للأعلى</option>
+                <option value="price_desc">السعر: من الأعلى للأقل</option>
               </select>
             </div>
           </div>
@@ -111,7 +115,7 @@ export default function ShopPage() {
             </span>
           </div>
           
-          <ProductGrid categoryId={selectedCategory} />
+          <ProductGrid categoryId={selectedCategory} sortOption={sortOption} />
           
           {/* Pagination Placeholder */}
           <div className="mt-16 flex justify-center gap-2">
